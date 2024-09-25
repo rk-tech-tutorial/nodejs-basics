@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+// body-parser
+app.use(express.json())
+
 
 /**
  * 1. Routes
@@ -11,6 +14,14 @@ const port = 3000
 app.get("/signup", (req, res) => { // localhost:3000/signup
   // Developer 
   res.send("Sign Up Page")
+})
+
+app.post("/signup", (req, res) => { // localhost:3000/signup
+  // Developer 
+  const body = req.body;
+  console.log(body)
+
+  res.send(body)
 })
 
 app.get("/login", (req, res) => { // localhost:3000/login
