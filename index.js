@@ -1,6 +1,17 @@
 const express = require('express')
+const mongoose = require('mongoose')
+
 const app = express()
 const port = 3000
+
+
+// Connect to MongoDB
+mongoose.connect("mongodb+srv://mongo-learning:QiONskrtrJrIcAvc@cluster0.9kl2w.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+.then(() => console.log("Connected to MongoDB"))
+.catch(err => console.log(err))
+
+const Cat = mongoose.model('Cat', { name: String });
+
 
 // body-parser
 app.use(express.json())
@@ -13,6 +24,12 @@ app.use(express.json())
 
 app.get("/signup", (req, res) => { // localhost:3000/signup
   // Developer 
+
+  const kitty = new Cat({ name: 'Ram' });
+
+  kitty.save().then(() => console.log('meow'));
+
+
   res.send("Sign Up Page")
 })
 
