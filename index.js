@@ -1,6 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
+const SignupModel = require("./signupModel")
+
 const app = express()
 const port = 3000
 
@@ -22,7 +24,7 @@ app.use(express.json())
  * 2. Middleware
  */
 
-app.get("/signup", (req, res) => { // localhost:3000/signup
+app.get("/signup", (req, res) => { // localhost:3000/signup,
   // Developer 
 
   const kitty = new Cat({ name: 'Ram' });
@@ -33,9 +35,12 @@ app.get("/signup", (req, res) => { // localhost:3000/signup
   res.send("Sign Up Page")
 })
 
-app.post("/signup", (req, res) => { // localhost:3000/signup
+app.post("/signup", async (req, res) => { // localhost:3000/signup
   // Developer 
   const body = req.body;
+
+  const signup = await SignupModel.create(body) // create
+
   console.log(body)
 
   res.send(body)
