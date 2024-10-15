@@ -24,18 +24,12 @@ app.use(express.json())
  * 2. Middleware
  */
 
-app.get("/signup", (req, res) => { // localhost:3000/signup,
-  // Developer 
+/**
+ * CRUD
+ * Create, Read, Update, Delete
+ */
 
-  const kitty = new Cat({ name: 'Ram' });
-
-  kitty.save().then(() => console.log('meow'));
-
-
-  res.send("Sign Up Page")
-})
-
-app.post("/signup", async (req, res) => { // localhost:3000/signup
+app.post("/create", async (req, res) => { // localhost:3000/signup
   // Developer 
   const body = req.body;
 
@@ -46,33 +40,28 @@ app.post("/signup", async (req, res) => { // localhost:3000/signup
   res.send(body)
 })
 
-app.get("/login", (req, res) => { // localhost:3000/login
-  // Developer
-  res.send("Login Page")
+app.get("/read", async (req, res) => {
+  const signups = await SignupModel.find({}) // read
+
+  res.send(signups)
 })
 
-app.get("/addition-calculator", (req, res) => { // localhost:3000/addition-calculator
-  // Developer
-  const a = 10
-  const b = 20
-  const sum = a + b
-  res.send(sum.toString())
+app.put("/update/:id", async(req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+
+  // where to update, what to update
+  const updatedData = await SignupModel.updateOne({_id: id}, body) // update
+
+  res.send(updatedData)
 })
 
-app.get("/query-param-example", (req, res) => { // localhost:3000/query-param-example?name=John
-      // req -> take data from client
-      // res -> send data to client
+app.delete("/delete/:id", async(req, res) => {
+  const id = req.params.id;
 
-      console.log(req.query) // taking data via query params
-      const query = req.query
+  const deletedData = await SignupModel.deleteOne({_id: id}) // delete
 
-      res.send(query)
-})
-
-app.get("/path-param-example/:example/:example2", (req, res) => {
-  const path = req.params // taking data via path params
-
-  res.send(path)
+  res.send(deletedData)
 })
 
 app.listen(port, () => {
