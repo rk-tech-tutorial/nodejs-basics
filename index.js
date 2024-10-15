@@ -12,8 +12,6 @@ mongoose.connect("mongodb+srv://mongo-learning:QiONskrtrJrIcAvc@cluster0.9kl2w.m
 .then(() => console.log("Connected to MongoDB"))
 .catch(err => console.log(err))
 
-const Cat = mongoose.model('Cat', { name: String });
-
 
 // body-parser
 app.use(express.json())
