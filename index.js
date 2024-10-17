@@ -27,13 +27,42 @@ app.use(express.json())
  * Create, Read, Update, Delete
  */
 
-app.post("/create", async (req, res) => { // localhost:3000/signup
+// Custom Middlware to validate body data for create
+
+const validateBody = (req, res, next) => {
+  const incomingData = req.body;
+
+  if(!incomingData.name) {
+    return res.send("Name is required, fill it")
+  }
+
+  if(!incomingData.email) {
+    // valid email check
+    return res.send("Email is required, fill it")
+  }
+
+  if(!incomingData.mobileNumber) {
+    return res.send("Mobile Number is required, fill it")
+  }
+
+  if(!incomingData.password) {
+    return res.send("Password is required, fill it")
+  }
+
+  next()
+}
+
+app.post("/create", validateBody, async (req, res) => { // localhost:3000/signup
   // Developer 
   const body = req.body;
+
+  // Check that body data is correct
 
   const signup = await SignupModel.create(body) // create
 
   console.log(body)
+
+  // Send response according client requirement
 
   res.send(body)
 })
@@ -44,7 +73,17 @@ app.get("/read", async (req, res) => {
   res.send(signups)
 })
 
-app.put("/update/:id", async(req, res) => {
+const validateUpdateBody = (req, res, next) => {
+  const incomingData = req.body;
+
+  if(incomingData.email) {
+    return res.send("Email cannot be updated")
+  }
+
+  next()
+}
+
+app.put("/update/:id", validateUpdateBody, async(req, res) => {
   const id = req.params.id;
   const body = req.body;
 
