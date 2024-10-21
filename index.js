@@ -33,20 +33,20 @@ const validateBody = (req, res, next) => {
   const incomingData = req.body;
 
   if(!incomingData.name) {
-    return res.send("Name is required, fill it")
+    return res.status(400).send("Name is required, fill it")
   }
 
   if(!incomingData.email) {
     // valid email check
-    return res.send("Email is required, fill it")
+    return res.status(400).send("Email is required, fill it")
   }
 
   if(!incomingData.mobileNumber) {
-    return res.send("Mobile Number is required, fill it")
+    return res.status(400).send("Mobile Number is required, fill it")
   }
 
   if(!incomingData.password) {
-    return res.send("Password is required, fill it")
+    return res.status(400).send("Password is required, fill it")
   }
 
   next()
@@ -56,15 +56,17 @@ app.post("/create", validateBody, async (req, res) => { // localhost:3000/signup
   // Developer 
   const body = req.body;
 
-  // Check that body data is correct
-
-  const signup = await SignupModel.create(body) // create
-
-  console.log(body)
+  // sync error handling
+  try {
+    // main logic
+    const signup = await SignupModel.create(body).lean().execute() // create
+  } catch (error) {
+    return res.status(500).send("Unexpected error")
+  }
 
   // Send response according client requirement
 
-  res.send(body)
+  res.status(200).send(body)
 })
 
 app.get("/read", async (req, res) => {
