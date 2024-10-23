@@ -52,21 +52,21 @@ const validateBody = (req, res, next) => {
   next()
 }
 
-app.post("/create", validateBody, async (req, res) => { // localhost:3000/signup
+app.post("/create", validateBody, async (request, response) => { // localhost:3000/signup
   // Developer 
-  const body = req.body;
+  const body = request.body;
 
   // sync error handling
   try {
     // main logic
-    const signup = await SignupModel.create(body).lean().execute() // create
+    const signup = await SignupModel.create(body)
   } catch (error) {
-    return res.status(500).send("Unexpected error")
+    return response.status(500).send("Unexpected error")
   }
 
   // Send response according client requirement
 
-  res.status(200).send(body)
+  return response.status(200).send(body)
 })
 
 app.get("/read", async (req, res) => {
