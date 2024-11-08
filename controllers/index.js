@@ -1,6 +1,6 @@
 const SignupModel = require("../models/index");
 
-const createCtrl = async (request, response) => { // localhost:3000/signup
+const signupCtrl = async (request, response) => { // localhost:3000/signup
     // Developer 
     const body = request.body;
 
@@ -16,6 +16,24 @@ const createCtrl = async (request, response) => { // localhost:3000/signup
     // Send response according client requirement
 
     return response.status(200).send(body)
+}
+
+const loginCtrl = async (req, res) => {
+    const { email, password } = req.body
+
+    const user = await SignupModel.findOne({email: email})
+
+    // if user = null
+    if(!user) {
+        return res.status(404).send("User not found. Please signup first")
+    }
+
+    // if user exists
+    if(user.password === password) {
+        return res.status(200).send("Login successful")
+    } else {
+        return res.status(400).send("Password is incorrect")
+    }   
 }
 
 const readCtrl = async (req, res) => {
@@ -44,4 +62,4 @@ const deleteOne = async (req, res) => {
     res.send(deletedData)
 }
 
-module.exports = { createCtrl, readCtrl, updateOne, deleteOne };
+module.exports = { signupCtrl, loginCtrl, readCtrl, updateOne, deleteOne };

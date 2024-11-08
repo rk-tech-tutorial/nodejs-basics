@@ -7,54 +7,35 @@
 const validateBody = (req, res, next) => {
     const incomingData = req.body;
 
-    if(!incomingData.firstName) {
+    if(!incomingData.name) {
         return res.send("First Name is required")
     }
 
-    if(incomingData.firstName) {
+    if(incomingData.name) {
         // do not include special characters
         // #, $, %, ^, &, *, (, )
 
         const specialCharacters = ["#", "$", "%", "^", "&", "*", "(", ")", "@"]
 
         for (const element of specialCharacters) {
-            if (incomingData.firstName.includes(element)) {
+            if (incomingData.name.includes(element)) {
                 return res.send("First Name cannot include special characters")
             }
         }
     }
 
-    if(!incomingData.lastName) {
-        return res.send("Last Name is required")
-    }
-
-    if(incomingData.lastName) {
-        // do not include special characters
-        // #, $, %, ^, &, *, (, )
-
-        const specialCharacters = ["#", "$", "%", "^", "&", "*", "(", ")", "@"]
-
-        for (const element of specialCharacters) {
-            if (incomingData.lastName.includes(element)) {
-                return res.send("Last Name cannot include special characters")
-            }
-        }
-    }
 
     if(!incomingData.email) {
         return res.send("Email is required")
     }
 
-    if(!incomingData.size) {
-        return res.send("Size is required")
+    if(!incomingData.password) {
+        return res.send("Password is required")
     }
 
-    if(incomingData.size) {
-        if (incomingData.size < 1 || incomingData.size > 5) {
-            return res.send("Size must be between 1 and 5")
-        }
+    if(!incomingData.mobileNumber) {
+        return res.send("Mobile Number is required")
     }
-
 
     next()
 }
@@ -69,4 +50,18 @@ const validateUpdateBody = (req, res, next) => {
     next()
 }
 
-module.exports = { validateBody, validateUpdateBody }
+const validateLoginBody = (req, res, next) => {
+    const incomingData = req.body;
+
+    if(!incomingData.email) {
+        return res.send("Email is required")
+    }
+
+    if(!incomingData.password) {
+        return res.send("Password is required")
+    }
+
+    next()
+}
+
+module.exports = { validateBody, validateUpdateBody, validateLoginBody }
