@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken")
 const SignupModel = require("../models/index");
 
 const signupCtrl = async (request, response) => { // localhost:3000/signup
@@ -28,9 +29,19 @@ const loginCtrl = async (req, res) => {
         return res.status(404).send("User not found. Please signup first")
     }
 
+    console.log(user)
+
     // if user exists
     if(user.password === password) {
-        return res.status(200).send("Login successful")
+        // Generate token
+        // Token => create a token
+        const payload = {
+            email: user.email,
+            id: user._id
+        }
+        const token = jwt.sign(payload, "3o80urjdkljfklsjdk9203u2")
+
+        return res.status(200).send(token)
     } else {
         return res.status(400).send("Password is incorrect")
     }   
