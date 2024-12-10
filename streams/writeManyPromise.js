@@ -20,3 +20,21 @@ const fs = require("fs/promises");
 
     console.timeEnd("write");
 })();
+
+/**
+ * Write 1 million lines in a file using streams
+ * Memory used - 210MB
+ * CPU used 
+ * time taken - 200ms
+ */
+
+(async () => {
+    console.time("write");
+    const file = await fs.open("text.txt", "w");
+    const writeStream = file.createWriteStream();
+    for (let i = 0; i < 1000000; i++) {
+        writeStream.write(`${i}\n`);
+    }
+    writeStream.end();
+    console.timeEnd("write");
+})()
